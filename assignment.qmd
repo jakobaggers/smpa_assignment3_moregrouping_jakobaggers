@@ -44,7 +44,9 @@ Write your code using grouping in the chunks below to help answer the following 
 
 ```{r}
 
-
+impeach %>% 
+  group_by(for_impeachment) %>% 
+  summarize(n = n())
 
 
 
@@ -57,7 +59,9 @@ You'll want to ensure you do the grouping on both columns together, e.g. `group_
 
 ```{r}
 
-
+impeach %>% 
+  group_by(for_impeachment, gdp_above_national) %>% 
+  summarize(n = n())
 
 
 
@@ -73,7 +77,9 @@ You'll want to ensure you do the grouping on both columns together, e.g. `group_
 ```{r}
 
 
-
+impeach %>% 
+  group_by(for_impeachment, pct_bachelors_compared_to_national) %>% 
+  summarize(n = n())
 
 
 
@@ -90,7 +96,9 @@ Instead of counting how many districts are above/below the national average, thi
 In other words, you want to end up with the calculated mean for what that percentage is for the Yes districts and the No districts.
 
 ```{r}
-
+impeach %>% 
+  group_by(for_impeachment) %>% 
+  summarize(mean_pct_bachelor = mean(pct_bachelors))
 
 
 
@@ -106,7 +114,9 @@ The relevant column for that is `trump_percent`.
 
 ```{r}
 
-
+impeach %>% 
+  group_by(for_impeachment) %>% 
+  summarize(mean_trumpvote = mean(trump_percent))
 
 
 
@@ -121,9 +131,13 @@ The relevant column for that is `trump_percent`.
 
 ```{r}
 
-  
+yes <- 
+impeach %>% 
+  filter(for_impeachment == "YES")
 
-
+yes %>% 
+  group_by(margin_flag_2018) %>% 
+  summarize(n = n())
 
 
 
@@ -133,10 +147,13 @@ The relevant column for that is `trump_percent`.
 
 7)  Come up with another breakdown of your choosing for how you'd like to examine this dataset. Say what you'll look at, and then put the code below to find the answer.
 
+I'm going to look at the pct of nonwhite constituents in the district.
 ```{r}
 
   
-
+impeach %>% 
+  group_by(for_impeachment) %>% 
+  summarize(mean_pct_nonwhite = mean(pct_nonwhite))
 
 
 
@@ -151,7 +168,12 @@ Use the mutate() function to create two new columns: one that extracts the year 
 
 ```{r}
 
-  
+impeach <-
+  impeach %>% 
+  mutate(year = substr(date_announced, 0,4),
+         month = substr(date_announced, 6, 7))
+
+
 
 
 
@@ -166,8 +188,8 @@ Use the mutate() function to create two new columns: one that extracts the year 
 ```{r}
 
   
-
-
+impeach %>% 
+  group_by(month)
 
 
 
